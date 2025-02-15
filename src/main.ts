@@ -1,24 +1,38 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { html, render } from "./renderer";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const random = (): any => (Math.random() + 1).toString(36).substring(7);
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+let someName = random();
+
+const listLength = 100;
+
+const list = Array.from({ length: listLength }, () => ({ name: random() }));
+
+const template = (): any => {
+  return html`<div>${someName} ${someName} ${someName}</div>
+    <div>
+      <ul>
+        ${list.map(
+          (el) =>
+            html`<li>
+              ${el.name}
+              <ul>
+                ${list.map((el) => html`<li>${el.name}</li>`)}
+              </ul>
+            </li>`,
+        )}
+      </ul>
+    </div>`;
+};
+
+const container = document.getElementById("app");
+
+render(template(), container);
+
+const run = (): void => {
+  someName = random();
+  render(template(), container);
+  requestAnimationFrame(run);
+};
+
+run();

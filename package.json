@@ -4,12 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "~5.7.2",
-    "vite": "^6.1.0"
+    "@brownhounds/eslint-config": "0.1.4",
+    "@brownhounds/ts-config": "0.1.0",
+    "@stylistic/eslint-plugin-js": "^3.1.0",
+    "typescript": "5.7.2",
+    "vite": "6.1.0"
   }
 }
