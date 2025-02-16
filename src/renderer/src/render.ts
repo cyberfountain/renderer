@@ -1,7 +1,6 @@
-import type { ElementWithCache } from "./element";
 import { HtmlTemplate } from "./HtmlTemplate";
 import { TemplateFragment } from "./TemplateFragment";
-import { initCache } from "./element";
+import { getCache } from "./element";
 
 export const html = (
   strings: TemplateStringsArray,
@@ -18,14 +17,13 @@ export const render = (
     throw new Error("render method needs to accept instance of HTMLElement");
   }
 
-  const cnt = container as ElementWithCache;
-  initCache(cnt);
-  let templateFragment = cnt.$cache?.template.get(template.strings);
+  const cache = getCache(container);
+  let templateFragment = cache.template.get(template.strings);
 
   if (!templateFragment) {
     templateFragment = new TemplateFragment(template);
-    cnt.$cache!.template.set(template.strings, templateFragment);
-    templateFragment.mount(cnt);
+    cache.template.set(template.strings, templateFragment);
+    templateFragment.mount(container);
   }
 
   templateFragment.update(template.values);
@@ -44,16 +42,50 @@ export const renderListElement = (
   if (!template.key) {
     throw new Error("use repeat directive when rendering the lists");
   }
-
-  const cnt = container as ElementWithCache;
-  initCache(cnt);
-  let templateFragment = cnt.$cache?.listDOM.get(template.key);
+  const cache = getCache(container);
+  let templateFragment = cache.listDOM.get(template.key);
 
   if (!templateFragment) {
     templateFragment = new TemplateFragment(template);
-    cnt.$cache!.listDOM.set(template.key, templateFragment);
-    templateFragment.mount(cnt);
+    cache.listDOM.set(template.key, templateFragment);
+    templateFragment.mount(container);
   }
 
   templateFragment.update(template.values);
+};
+
+// if cache array empty skip diffing - initial render
+// if new array empty skip diffing
+// if inserts are === to the length of new array just tear it down
+// maybe a high end percentage let's 90% change and long list just tear it down and rerender ??
+// what thosecriteria whould be waht is a long list 1k 2k 10k :shrug:
+// same with deletes
+// inserts possibly just renderListItem append at given point instead of appending child
+// render array cache just replace every time
+//
+// initial render loop over all
+// diff sequence ?? :
+//  1. deletes
+//  2. moves
+//  3. inserts
+//
+//  operate on listCache for deletes and moves
+//  when deleting remove from cache
+//  itterate over cache and trigger update
+//  perform insert - renderListItem before a given child instead of container append :thinking:
+//  I think I want the whole rendering procudure to happen here not in TemplateHole :thinking:
+//
+//  This has to be written modular so I can unit test this, this is critical part
+export const renderList = (
+  values: HtmlTemplate[],
+  container: ParentNode,
+): void => {
+  const cache = getCache(container);
+  console.log(cache.listHtmlTemplate);
+
+  // Call this renderList I guess ??
+  // entry point data I need
+  // cache access given by passing a parentElement
+
+  cache.listHtmlTemplate = values;
 };

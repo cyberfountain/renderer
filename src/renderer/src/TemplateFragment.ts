@@ -69,7 +69,7 @@ export class TemplateFragment {
     return fragment;
   }
 
-  public mount(container: ElementWithCache): void {
+  public mount(container: HTMLElement | ParentNode): void {
     const fragment = this.initFragment();
     this.hydrateTemplateHoles(fragment);
     this.hydrateAttributes(fragment);

@@ -7,12 +7,12 @@ export type DiffResult = {
     type: "insert";
     key: string;
     value: unknown;
-    beforeKey: string | null;
+    beforeKey?: string;
   }[];
   move: {
     type: "move";
     key: string;
-    beforeKey: string | null;
+    beforeKey?: string;
   }[];
 };
 
@@ -94,8 +94,7 @@ export const diff = (
   for (i = 0; i < newLen; i++) {
     k = newArr[i].key;
     // Compute beforeKey once per iteration.
-    // eslint-disable-next-line no-null/no-null
-    const beforeKey = i + 1 < newLen ? newArr[i + 1].key : null;
+    const beforeKey = i + 1 < newLen ? newArr[i + 1].key : undefined;
     if (newIndices[i] === -1) {
       opsInsert.push({
         type: "insert" as const,
@@ -157,32 +156,4 @@ const computeLIS = (arr: number[]): number[] => {
     k = p[k];
   }
   return lis;
-};
-
-// if cache array empty skip diffing - initial render
-// if new array empty skip diffing
-// if inserts are === to the length of new array just tear it down
-// maybe a high end percentage let's 90% change and long list just tear it down and rerender ??
-// what thosecriteria whould be waht is a long list 1k 2k 10k :shrug:
-// same with deletes
-// inserts possibly just renderListItem append at given point instead of appending child
-// render array cache just replace every time
-//
-// initial render loop over all
-// diff sequence ?? :
-//  1. deletes
-//  2. moves
-//  3. inserts
-//
-//  operate on listCache for deletes and moves
-//  when deleting remove from cache
-//  itterate over cache and trigger update
-//  perform insert - renderListItem before a given child instead of container append :thinking:
-//  I think I want the whole rendering procudure to happen here not in TemplateHole :thinking:
-//
-//  This has to be written modular so I can unit test this, this is critical part
-const diffProcedure = (newArr: any): any => {
-  // Call this renderList I guess ??
-  // entry point data I need
-  // cache access given by passing a parentElement
 };
