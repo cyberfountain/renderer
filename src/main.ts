@@ -1,4 +1,5 @@
 import { html, render } from "./renderer";
+import { repeat } from "./renderer/src/directives";
 
 const random = (): any => (Math.random() + 1).toString(36).substring(7);
 
@@ -6,7 +7,10 @@ let someName = random();
 
 const listLength = 100;
 
-const list = Array.from({ length: listLength }, () => ({ name: random() }));
+const list = Array.from({ length: listLength }, () => ({
+  name: random(),
+  key: random(),
+}));
 
 const onClick = (): void => {
   console.log("OMG");
@@ -14,7 +18,26 @@ const onClick = (): void => {
 
 const template = (): any => {
   return html`
-    <div>${someName} ${someName} ${someName}</div>
+    <div>${someName}</div>
+    <div>
+      <ul>
+        ${repeat(
+          list,
+          (val) =>
+            html`<li>
+              ${val.name}
+              <ul>
+                ${repeat(
+                  list,
+                  (val) => html`<li>${val.name}</li>`,
+                  (val) => val.key,
+                )}
+              </ul>
+            </li>`,
+          (val) => val.key,
+        )}
+      </ul>
+    </div>
     <button id="btn" @click="${onClick}">Click me</button>
   `;
 };
@@ -25,11 +48,13 @@ render(template(), container);
 
 const run = (): void => {
   someName = random();
+  list[0].name = random();
+  list[3].name = random();
   render(template(), container);
   requestAnimationFrame(run);
 };
 
-// run();
+run();
 
 (window as any).render = (): void => {
   someName = random();
