@@ -28,7 +28,7 @@ export const render = (
     templateFragment.mount(cnt);
   }
 
-  templateFragment.update(cnt, template.values);
+  templateFragment.update(template.values);
 };
 
 // TODO: two func almost the same keep it for now
@@ -53,5 +53,5 @@ export const renderList = (
     templateFragment.mount(cnt);
   }
 
-  templateFragment.update(cnt, template.values);
+  templateFragment.update(template.values);
 };

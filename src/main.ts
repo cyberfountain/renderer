@@ -8,21 +8,15 @@ const listLength = 100;
 
 const list = Array.from({ length: listLength }, () => ({ name: random() }));
 
+const onClick = (): void => {
+  console.log("OMG");
+};
+
 const template = (): any => {
-  return html`<div>${someName} ${someName} ${someName}</div>
-    <div>
-      <ul>
-        ${list.map(
-          (el) =>
-            html`<li>
-              ${el.name}
-              <ul>
-                ${list.map((el) => html`<li>${el.name}</li>`)}
-              </ul>
-            </li>`,
-        )}
-      </ul>
-    </div>`;
+  return html`
+    <div>${someName} ${someName} ${someName}</div>
+    <button id="btn" @click="${onClick}">Click me</button>
+  `;
 };
 
 const container = document.getElementById("app");
@@ -35,4 +29,9 @@ const run = (): void => {
   requestAnimationFrame(run);
 };
 
-run();
+// run();
+
+(window as any).render = (): void => {
+  someName = random();
+  render(template(), container);
+};

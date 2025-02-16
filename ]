@@ -1,18 +1,20 @@
 import type { ElementWithCache } from "./element";
 import type { Hole } from "./holes/Hole";
 import { TemplateHole } from "./holes/TemplateHole";
+import type { Attributes } from "./constants";
 import { TEMPLATE_MARKER_GLYPH } from "./constants";
 import { getIndexFromComment, makeMarkerComment } from "./utils";
-import {
-  type AttributeDefinition,
-  detectAttributes,
-  processAttribute,
-} from "./attributes";
+
+type AttributeDefinition = {
+  index: number;
+  comment: string;
+  type: Attributes;
+};
 
 export class TemplateFragment {
   private htmlString = "";
   private holes = new Map<number, Hole>();
-  private attributeMap: AttributeDefinition[] = [];
+  private attributeMap = [];
 
   constructor(strings: TemplateStringsArray) {
     this.parse(strings);
@@ -23,8 +25,13 @@ export class TemplateFragment {
     for (let i = 0; i < len; i++) {
       this.htmlString += strings[i];
       if (i < strings.length - 1) {
-        const attr = detectAttributes(this.htmlString, i);
-        if (attr) this.attributeMap.push(attr);
+        const regex = /(\S+)(?==(?:["']?)$)/;
+        const match = this.htmlString.match(regex);
+
+        if (match) {
+          console.log(match[1]);
+        }
+
         this.htmlString += makeMarkerComment(i);
       }
     }
@@ -37,12 +44,8 @@ export class TemplateFragment {
   }
 
   private hydrateAttributes(fragment: DocumentFragment): DocumentFragment {
-    const len = this.attributeMap.length;
-    for (let i = 0; i < len; i++) {
-      const hole = processAttribute(fragment, this.attributeMap[i]);
-      if (hole) this.holes.set(this.attributeMap[i].index, hole);
-    }
-
+    // return attributes map key and value
+    // console.log(f.querySelector("[\\@click]")); Deal with attributes here
     return fragment;
   }
 

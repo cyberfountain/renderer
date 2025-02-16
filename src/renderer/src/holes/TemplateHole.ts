@@ -2,11 +2,7 @@ import type { Hole } from "./Hole";
 import { renderList } from "../render";
 
 export class TemplateHole implements Hole {
-  public node: Text;
-
-  constructor() {
-    this.node = document.createTextNode("");
-  }
+  public node = document.createTextNode("");
 
   public setValue(value: unknown): void {
     if (Array.isArray(value)) {
