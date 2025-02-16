@@ -1,7 +1,7 @@
 import type { ElementWithCache } from "./element";
 import { HtmlTemplate } from "./HtmlTemplate";
 import { TemplateFragment } from "./TemplateFragment";
-import { initCache, initListCache } from "./element";
+import { initCache } from "./element";
 
 export const html = (
   strings: TemplateStringsArray,
