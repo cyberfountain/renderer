@@ -3,7 +3,7 @@ import type { TemplateFragment } from "./TemplateFragment";
 export type ElementWithCache = {
   $cache?: {
     template: Map<TemplateStringsArray, TemplateFragment>;
-    list: Map<number, TemplateFragment>;
+    list: Map<string, TemplateFragment>;
   };
 } & HTMLElement;
 
@@ -12,6 +12,6 @@ export const initCache = (el: ElementWithCache): void => {
 
   el.$cache = {
     template: new Map<TemplateStringsArray, TemplateFragment>(),
-    list: new Map<number, TemplateFragment>(),
+    list: new Map<string, TemplateFragment>(),
   };
 };

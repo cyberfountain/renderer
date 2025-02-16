@@ -23,7 +23,7 @@ export const render = (
   let templateFragment = cnt.$cache?.template.get(template.strings);
 
   if (!templateFragment) {
-    templateFragment = new TemplateFragment(template.strings);
+    templateFragment = new TemplateFragment(template);
     cnt.$cache!.template.set(template.strings, templateFragment);
     templateFragment.mount(cnt);
   }
@@ -35,7 +35,6 @@ export const render = (
 export const renderList = (
   template: HtmlTemplate,
   container: ParentNode | null,
-  index: number, //temporary or not ??
 ): void => {
   if (!container) {
     throw new Error(
@@ -43,13 +42,17 @@ export const renderList = (
     );
   }
 
+  if (!template.key) {
+    throw new Error("use repeat directive when rendering the lists");
+  }
+
   const cnt = container as ElementWithCache;
   initCache(cnt);
-  let templateFragment = cnt.$cache?.list.get(index);
+  let templateFragment = cnt.$cache?.list.get(template.key);
 
   if (!templateFragment) {
-    templateFragment = new TemplateFragment(template.strings);
-    cnt.$cache!.list.set(index, templateFragment);
+    templateFragment = new TemplateFragment(template);
+    cnt.$cache!.list.set(template.key, templateFragment);
     templateFragment.mount(cnt);
   }
 

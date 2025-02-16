@@ -8,7 +8,7 @@ export class TemplateHole implements Hole {
     if (Array.isArray(value)) {
       const len = value.length;
       for (let i = 0; i < len; i++) {
-        renderList(value[i], this.node.parentNode, i);
+        renderList(value[i], this.node.parentNode);
       }
       return;
     }

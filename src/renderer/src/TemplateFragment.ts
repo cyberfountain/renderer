@@ -1,5 +1,6 @@
 import type { ElementWithCache } from "./element";
 import type { Hole } from "./holes/Hole";
+import type { HtmlTemplate } from "./HtmlTemplate";
 import { TemplateHole } from "./holes/TemplateHole";
 import { TEMPLATE_MARKER_GLYPH } from "./constants";
 import { getIndexFromComment, makeMarkerComment } from "./utils";
@@ -14,8 +15,8 @@ export class TemplateFragment {
   private holes = new Map<number, Hole>();
   private attributeMap: AttributeDefinition[] = [];
 
-  constructor(strings: TemplateStringsArray) {
-    this.parse(strings);
+  constructor(template: HtmlTemplate) {
+    this.parse(template.strings);
   }
 
   private parse(strings: TemplateStringsArray): void {

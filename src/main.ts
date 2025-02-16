@@ -21,7 +21,7 @@ const template = (): any => {
     <div>${someName}</div>
     <div>
       <ul>
-        ${repeat(list, (val) => html`<li>${val.name}</li>`)}
+        ${repeat(list, (val, index) => html`<li>${val.name} ${index}</li>`)}
       </ul>
     </div>
     <button id="btn" @click="${onClick}">Click me</button>
