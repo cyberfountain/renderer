@@ -1,15 +1,19 @@
 import type { Hole } from "./Hole";
-import { renderList } from "../render";
+import { renderListElement } from "../render";
+import type { HtmlTemplate } from "../HtmlTemplate";
+import type { ElementWithCache } from "../element";
 
 export class TemplateHole implements Hole {
   public node = document.createTextNode("");
 
-  public setValue(value: unknown): void {
+  public setValue(value: HtmlTemplate[]): void {
     if (Array.isArray(value)) {
+      const parent = this.node.parentNode as ElementWithCache;
       const len = value.length;
       for (let i = 0; i < len; i++) {
-        renderList(value[i], this.node.parentNode);
+        renderListElement(value[i], parent);
       }
+      if (parent) parent.$cache!.listHtmlTemplate = value;
       return;
     }
 

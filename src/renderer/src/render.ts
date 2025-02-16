@@ -31,8 +31,7 @@ export const render = (
   templateFragment.update(template.values);
 };
 
-// TODO: two func almost the same keep it for now
-export const renderList = (
+export const renderListElement = (
   template: HtmlTemplate,
   container: ParentNode | null,
 ): void => {
@@ -48,11 +47,11 @@ export const renderList = (
 
   const cnt = container as ElementWithCache;
   initCache(cnt);
-  let templateFragment = cnt.$cache?.list.get(template.key);
+  let templateFragment = cnt.$cache?.listDOM.get(template.key);
 
   if (!templateFragment) {
     templateFragment = new TemplateFragment(template);
-    cnt.$cache!.list.set(template.key, templateFragment);
+    cnt.$cache!.listDOM.set(template.key, templateFragment);
     templateFragment.mount(cnt);
   }
 
