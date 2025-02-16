@@ -12,3 +12,14 @@ export const getIndexFromComment = (comment: string): number => {
 export const makeMarkerComment = (index: number): string => {
   return `<!--${TEMPLATE_MARKER_GLYPH}${index}-->`;
 };
+
+export const fastUID = (): string =>
+  Math.floor(performance.now() * 1000).toString(36) +
+  Math.random().toString(36).slice(2, 6);
+
+export const perf = (cb: () => void): void => {
+  const from = performance.now();
+  cb();
+  const to = performance.now();
+  console.log(`Total miliseconds ${to - from}`);
+};

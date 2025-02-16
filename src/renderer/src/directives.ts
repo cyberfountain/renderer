@@ -1,16 +1,16 @@
 import type { HtmlTemplate } from "./HtmlTemplate";
+import { fastUID } from "./utils";
 
-export const repeat = <T = unknown>(
+export const __key__ = Symbol("__key__");
+
+export const repeat = <T extends Record<string | symbol, unknown>>(
   list: T[],
   callback: (val: T, index: number) => HtmlTemplate,
-  key: ((val: T) => string) | undefined,
 ): HtmlTemplate[] => {
-  const result = [];
-  const len = list.length;
-  for (let i = 0; i < len; i++) {
-    const template = callback(list[i], i);
-    if (key) template.key = key(list[i]);
-    result.push(template);
-  }
-  return result;
+  return list.map((item, index) => {
+    if (!item[__key__]) (item[__key__] as any) = fastUID();
+    const template = callback(item, index);
+    template.key = item[__key__] as string;
+    return template;
+  });
 };

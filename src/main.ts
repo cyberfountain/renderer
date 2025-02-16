@@ -5,7 +5,7 @@ const random = (): any => (Math.random() + 1).toString(36).substring(7);
 
 let someName = random();
 
-const listLength = 100;
+const listLength = 10;
 
 const list = Array.from({ length: listLength }, () => ({
   name: random(),
@@ -21,21 +21,7 @@ const template = (): any => {
     <div>${someName}</div>
     <div>
       <ul>
-        ${repeat(
-          list,
-          (val) =>
-            html`<li>
-              ${val.name}
-              <ul>
-                ${repeat(
-                  list,
-                  (val) => html`<li>${val.name}</li>`,
-                  (val) => val.key,
-                )}
-              </ul>
-            </li>`,
-          (val) => val.key,
-        )}
+        ${repeat(list, (val) => html`<li>${val.name}</li>`)}
       </ul>
     </div>
     <button id="btn" @click="${onClick}">Click me</button>
@@ -54,7 +40,7 @@ const run = (): void => {
   requestAnimationFrame(run);
 };
 
-run();
+// run();
 
 (window as any).render = (): void => {
   someName = random();
