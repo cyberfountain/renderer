@@ -79,6 +79,13 @@ export const renderListElement = (
 //
 //  This has to be written modular so I can unit test this, this is critical part
 
+const getFirstComment = (ctn: ParentNode): Comment => {
+  // Browser weirdness white space is treated as Text node when parsed from innerHtml
+  // got to check first and second node :shrug:
+  if (ctn.childNodes[0] instanceof Comment) return ctn.childNodes[0] as Comment;
+  return ctn.childNodes[1] as Comment;
+};
+
 const renderAllItems = (
   values: HtmlTemplate[],
   container: ParentNode,
@@ -96,15 +103,18 @@ export const renderList = (
   const cache = getCache(container);
   if (!cache || !container) return;
 
+  // Initial Render
   if (!cache.listHtmlTemplate.length) {
     renderAllItems(values, container);
   }
 
+  // Empty Incoming List
   if (!values.length) {
-    for (const [, el] of cache.listNodes) {
-      // Not very optimal one by one, will do for now!! :thinking:
-      el.remove();
-    }
+    const frag = document.createDocumentFragment();
+    const comment = getFirstComment(container);
+    frag.appendChild(comment);
+    (container as HTMLElement).innerHTML = "";
+    container.appendChild(frag.firstChild as Comment);
     cache.listTemplate.clear();
   }
 

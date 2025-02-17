@@ -22,14 +22,14 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
         - [] DOM manipulation based on diff result :fire:
             - [x] Render all elements (without diffing)
             - [x] Remove all elements (without a diffing)
-                - [] Not ideal ATM implementation follows what needs to be done in case of diff result, this is not efficient way of clearing DOM nodes :thinking:
+                - [x] Not ideal ATM implementation follows what needs to be done in case of diff result, this is not efficient way of clearing DOM nodes :thinking: - fixed with `ListHole` type :tada:
             - [] Diffing Results
                 - [] Deletions
                 - [] Swaps
                 - [] Inserts
     - [] TemplateHole
         - [x] Render Lists => html`${list.map(...)}`
-        - [] Add new hole for list rendering `ListHole` <== PRIORITY!!
+        - [x] Add new hole for list rendering `ListHole`
         - [] Render instances of `HtmlTemplate` => html`...`
         - [] Allow string rendering => html`Loading...`
         - [] Conditional rendering (check caches, templates holes etc. to avoid memory leaks :siren:)
