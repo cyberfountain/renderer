@@ -24,7 +24,7 @@ export const render = (
   if (!templateFragment) {
     templateFragment = new TemplateFragment(template);
     cache.template.set(template.strings, templateFragment);
-    templateFragment.mount(container);
+    templateFragment.mount(container, template.values);
   }
 
   templateFragment.update(template.values);
@@ -51,7 +51,7 @@ export const renderListElement = (
   if (!templateFragment) {
     templateFragment = new TemplateFragment(template);
     cache.listTemplate.set(template.key, templateFragment);
-    templateFragment.mountList(container, template.key);
+    templateFragment.mountList(container, template.key, template.values);
   }
   templateFragment.update(template.values);
 };
@@ -101,11 +101,11 @@ export const renderList = (
   }
 
   if (!values.length) {
-    for (const [key, el] of cache.listNodes) {
+    for (const [, el] of cache.listNodes) {
       // Not very optimal one by one, will do for now!! :thinking:
       el.remove();
-      cache.listTemplate.delete(key);
     }
+    cache.listTemplate.clear();
   }
 
   cache.listHtmlTemplate = values;

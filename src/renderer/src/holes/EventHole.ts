@@ -1,10 +1,10 @@
 import type { AttributeDefinition } from "../attributes";
-import type { Hole } from "./Hole";
+import type { AttributeHole } from "./AttributeHole";
 
-export class EventHole implements Hole {
+export class EventHole implements AttributeHole {
   constructor(
     public node: HTMLElement,
-    private definition: AttributeDefinition,
+    public definition: AttributeDefinition,
   ) {}
 
   // Add @click.stop and @click.prevent

@@ -1,7 +1,6 @@
 import { getCache } from "./element";
 import type { Hole } from "./holes/Hole";
 import type { HtmlTemplate } from "./HtmlTemplate";
-import { TemplateHole } from "./holes/TemplateHole";
 import { TEMPLATE_MARKER_GLYPH } from "./constants";
 import { getIndexFromComment, makeMarkerComment } from "./utils";
 import {
@@ -9,10 +8,11 @@ import {
   detectAttributes,
   processAttribute,
 } from "./attributes";
+import { HoleFactory } from "./holes/HoleFactory";
 
 export class TemplateFragment {
-  private htmlString = "";
   public holes = new Map<number, Hole>();
+  private htmlString = "";
   private attributeMap: AttributeDefinition[] = [];
 
   constructor(template: HtmlTemplate) {
@@ -47,7 +47,10 @@ export class TemplateFragment {
     return fragment;
   }
 
-  private hydrateTemplateHoles(fragment: DocumentFragment): DocumentFragment {
+  private hydrateTemplateHoles(
+    fragment: DocumentFragment,
+    values: unknown[],
+  ): DocumentFragment {
     const walker = document.createTreeWalker(
       fragment,
       NodeFilter.SHOW_COMMENT,
@@ -60,24 +63,27 @@ export class TemplateFragment {
 
       if (node.nodeValue?.includes(TEMPLATE_MARKER_GLYPH)) {
         const holeIndex = getIndexFromComment(node.nodeValue);
-        const expressionMarker = new TemplateHole();
-        node.parentNode?.insertBefore(expressionMarker.node, node);
-        this.holes.set(holeIndex, expressionMarker);
+        const hole = HoleFactory.create(values[holeIndex], node as Comment);
+        this.holes.set(holeIndex, hole);
       }
     }
 
     return fragment;
   }
 
-  public mount(container: HTMLElement | ParentNode): void {
+  public mount(container: HTMLElement | ParentNode, values: unknown[]): void {
     const fragment = this.initFragment();
-    this.hydrateTemplateHoles(fragment);
+    this.hydrateTemplateHoles(fragment, values);
     this.hydrateAttributes(fragment);
     container.appendChild(fragment);
   }
 
-  public mountList(container: HTMLElement | ParentNode, itemKey: string): void {
-    this.mount(container);
+  public mountList(
+    container: HTMLElement | ParentNode,
+    itemKey: string,
+    values: unknown[],
+  ): void {
+    this.mount(container, values);
     const cache = getCache(container);
     if (container.lastChild && cache) {
       cache.listNodes.set(itemKey, container.lastChild);
