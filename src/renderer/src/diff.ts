@@ -1,24 +1,22 @@
+import type { HtmlTemplate } from "./HtmlTemplate";
+
 export type DiffResult = {
-  delete: {
+  deletes: {
     type: "delete";
     key: string;
   }[];
-  insert: {
+  inserts: {
     type: "insert";
     key: string;
     value: unknown;
     beforeKey?: string;
   }[];
-  move: {
+  moves: {
     type: "move";
     key: string;
     beforeKey?: string;
   }[];
 };
-
-type InputDiffArray = {
-  key: string; // Make sure to use unique symbol field here!
-}[];
 
 /**
  * Diff two arrays of objects (each having a unique `key`)
@@ -27,8 +25,8 @@ type InputDiffArray = {
  * on normal size lists expected in apps negligible overhead of sub millisecond
  */
 export const diff = (
-  oldArr: InputDiffArray,
-  newArr: InputDiffArray,
+  oldArr: HtmlTemplate[],
+  newArr: HtmlTemplate[],
 ): DiffResult => {
   const oldLen = oldArr.length;
   const newLen = newArr.length;
@@ -108,9 +106,9 @@ export const diff = (
   }
 
   return {
-    delete: opsDelete,
-    insert: opsInsert,
-    move: opsMove,
+    deletes: opsDelete,
+    inserts: opsInsert,
+    moves: opsMove,
   };
 };
 

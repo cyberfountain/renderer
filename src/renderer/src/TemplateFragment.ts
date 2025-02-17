@@ -78,7 +78,7 @@ export class TemplateFragment {
     container.appendChild(fragment);
   }
 
-  public mountList(
+  public mountListElement(
     container: HTMLElement | ParentNode,
     itemKey: string,
     values: unknown[],

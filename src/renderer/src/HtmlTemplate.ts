@@ -1,5 +1,5 @@
 export class HtmlTemplate {
-  public key?: string = undefined;
+  public key = "";
 
   constructor(
     public strings: TemplateStringsArray,

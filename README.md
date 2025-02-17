@@ -5,7 +5,8 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
 - [] Attributes
     - [x] Events - @click
         - [] @click.stop and @click.prevent if possible :thinking:
-    - [] Props - :propname
+        - [] Keep in-line events for now `onclick` etc. when this becomes and issue swap to `addEventListener` - will probably never come to that :thinking:
+    - [] Props - :propname - bind directly to an exposed prop handler in my framework
     - [] Add model binding - `~model` - can call it what ever I want with current implementation :tada:
     - [] Native Attributes - bind as string
 
@@ -27,7 +28,7 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
                 - [] Deletions
                 - [] Swaps
                 - [] Inserts
-    - [] TemplateHole
+    - [] Holes
         - [x] Render Lists => html`${list.map(...)}`
         - [x] Add new hole for list rendering `ListHole`
         - [] Render instances of `HtmlTemplate` => html`...`
