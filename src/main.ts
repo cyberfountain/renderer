@@ -8,10 +8,12 @@ let someName = random();
 
 const listLength = 10;
 
-const list = Array.from({ length: listLength }, () => ({
-  name: random(),
-  key: random(),
-}));
+const initList = (count: number): any =>
+  Array.from({ length: count }, () => ({
+    name: random(),
+  }));
+
+let list = initList(listLength);
 
 const onClick = (): void => {
   console.log("OMG");
@@ -45,6 +47,18 @@ const run = (): void => {
 
 (window as any).render = (): void => {
   someName = random();
+  render(template(), container);
+};
+
+(window as any).empty = (): void => {
+  someName = random();
+  list = [];
+  render(template(), container);
+};
+
+(window as any).changeSize = (): void => {
+  someName = random();
+  list = initList(5);
   render(template(), container);
 };
 

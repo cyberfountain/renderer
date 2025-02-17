@@ -17,7 +17,7 @@ export type DiffResult = {
 };
 
 type InputDiffArray = {
-  key: string;
+  key: string; // Make sure to use unique symbol field here!
 }[];
 
 /**

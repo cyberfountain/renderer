@@ -5,13 +5,10 @@ import type { HtmlTemplate } from "../HtmlTemplate";
 export class TemplateHole implements Hole {
   public node = document.createTextNode("");
 
+  // TODO: New hole for array rendering
   public setValue(value: HtmlTemplate[]): void {
     if (Array.isArray(value)) {
       renderList(value, this.node.parentNode);
-      const len = value.length;
-      for (let i = 0; i < len; i++) {
-        renderListElement(value[i], this.node.parentNode);
-      }
       return;
     }
 

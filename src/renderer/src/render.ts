@@ -18,6 +18,7 @@ export const render = (
   }
 
   const cache = getCache(container);
+  if (!cache) return;
   let templateFragment = cache.template.get(template.strings);
 
   if (!templateFragment) {
@@ -43,14 +44,15 @@ export const renderListElement = (
     throw new Error("use repeat directive when rendering the lists");
   }
   const cache = getCache(container);
-  let templateFragment = cache.listDOM.get(template.key);
+  if (!cache) return;
+
+  let templateFragment = cache?.listTemplate.get(template.key);
 
   if (!templateFragment) {
     templateFragment = new TemplateFragment(template);
-    cache.listDOM.set(template.key, templateFragment);
-    templateFragment.mount(container);
+    cache.listTemplate.set(template.key, templateFragment);
+    templateFragment.mountList(container, template.key);
   }
-
   templateFragment.update(template.values);
 };
 
@@ -76,16 +78,35 @@ export const renderListElement = (
 //  I think I want the whole rendering procudure to happen here not in TemplateHole :thinking:
 //
 //  This has to be written modular so I can unit test this, this is critical part
-export const renderList = (
+
+const renderAllItems = (
   values: HtmlTemplate[],
   container: ParentNode,
 ): void => {
-  const cache = getCache(container);
-  console.log(cache.listHtmlTemplate);
+  const len = values.length;
+  for (let i = 0; i < len; i++) {
+    renderListElement(values[i], container);
+  }
+};
 
-  // Call this renderList I guess ??
-  // entry point data I need
-  // cache access given by passing a parentElement
+export const renderList = (
+  values: HtmlTemplate[],
+  container: ParentNode | null,
+): void => {
+  const cache = getCache(container);
+  if (!cache || !container) return;
+
+  if (!cache.listHtmlTemplate.length) {
+    renderAllItems(values, container);
+  }
+
+  if (!values.length) {
+    for (const [key, el] of cache.listNodes) {
+      // Not very optimal one by one, will do for now!! :thinking:
+      el.remove();
+      cache.listTemplate.delete(key);
+    }
+  }
 
   cache.listHtmlTemplate = values;
 };

@@ -1,4 +1,4 @@
-import type { ElementWithCache } from "./element";
+import { getCache } from "./element";
 import type { Hole } from "./holes/Hole";
 import type { HtmlTemplate } from "./HtmlTemplate";
 import { TemplateHole } from "./holes/TemplateHole";
@@ -12,7 +12,7 @@ import {
 
 export class TemplateFragment {
   private htmlString = "";
-  private holes = new Map<number, Hole>();
+  public holes = new Map<number, Hole>();
   private attributeMap: AttributeDefinition[] = [];
 
   constructor(template: HtmlTemplate) {
@@ -74,6 +74,14 @@ export class TemplateFragment {
     this.hydrateTemplateHoles(fragment);
     this.hydrateAttributes(fragment);
     container.appendChild(fragment);
+  }
+
+  public mountList(container: HTMLElement | ParentNode, itemKey: string): void {
+    this.mount(container);
+    const cache = getCache(container);
+    if (container.lastChild && cache) {
+      cache.listNodes.set(itemKey, container.lastChild);
+    }
   }
 
   public update(values: unknown[]): void {
