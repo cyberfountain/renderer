@@ -71,10 +71,18 @@ export class TemplateFragment {
     return fragment;
   }
 
-  public mount(container: HTMLElement | ParentNode, values: unknown[]): void {
+  public mount(
+    container: HTMLElement | ParentNode,
+    values: unknown[],
+    beforeNode?: Node,
+  ): void {
     const fragment = this.initFragment();
     this.hydrateTemplateHoles(fragment, values);
     this.hydrateAttributes(fragment);
+    if (beforeNode) {
+      container.insertBefore(fragment, beforeNode);
+      return;
+    }
     container.appendChild(fragment);
   }
 
@@ -82,11 +90,15 @@ export class TemplateFragment {
     container: HTMLElement | ParentNode,
     itemKey: string,
     values: unknown[],
+    beforeNode?: Node,
   ): void {
-    this.mount(container, values);
+    this.mount(container, values, beforeNode);
     const cache = getCache(container);
-    if (container.lastChild && cache) {
-      cache.listNodes.set(itemKey, container.lastChild);
+    const insertedNode = beforeNode
+      ? beforeNode.previousSibling
+      : container.lastChild;
+    if (insertedNode && cache) {
+      cache.listNodes.set(itemKey, insertedNode);
     }
   }
 

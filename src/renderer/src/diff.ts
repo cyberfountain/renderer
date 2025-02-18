@@ -1,21 +1,24 @@
 import type { HtmlTemplate } from "./HtmlTemplate";
 
+export type DiffDeleteOperations = {
+  key: string;
+}[];
+
+export type DiffInsertOperations = {
+  key: string;
+  value: HtmlTemplate;
+  beforeKey?: string;
+}[];
+
+export type DiffMoveOperations = {
+  key: string;
+  beforeKey?: string;
+}[];
+
 export type DiffResult = {
-  deletes: {
-    type: "delete";
-    key: string;
-  }[];
-  inserts: {
-    type: "insert";
-    key: string;
-    value: unknown;
-    beforeKey?: string;
-  }[];
-  moves: {
-    type: "move";
-    key: string;
-    beforeKey?: string;
-  }[];
+  deletes: DiffDeleteOperations;
+  inserts: DiffInsertOperations;
+  moves: DiffMoveOperations;
 };
 
 /**
@@ -84,7 +87,7 @@ export const diff = (
   for (i = 0; i < oldLen; i++) {
     k = oldArr[i].key;
     if (newKeys[k] !== true) {
-      opsDelete.push({ type: "delete" as const, key: k });
+      opsDelete.push({ key: k });
     }
   }
 
@@ -95,13 +98,12 @@ export const diff = (
     const beforeKey = i + 1 < newLen ? newArr[i + 1].key : undefined;
     if (newIndices[i] === -1) {
       opsInsert.push({
-        type: "insert" as const,
         key: k,
         value: newArr[i],
         beforeKey: beforeKey,
       });
     } else if (!keep[i]) {
-      opsMove.push({ type: "move" as const, key: k, beforeKey: beforeKey });
+      opsMove.push({ key: k, beforeKey: beforeKey });
     }
   }
 
