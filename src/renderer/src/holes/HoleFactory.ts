@@ -1,5 +1,7 @@
+import { HtmlTemplate } from "../HtmlTemplate";
 import type { Hole } from "./Hole";
 import { ListHole } from "./ListHole";
+import { StringHole } from "./StringHole";
 import { TemplateHole } from "./TemplateHole";
 
 export class HoleFactory {
@@ -8,6 +10,10 @@ export class HoleFactory {
       return new ListHole(node);
     }
 
-    return new TemplateHole(node);
+    if (valueAtIndex instanceof HtmlTemplate) {
+      return new TemplateHole(node);
+    }
+
+    return new StringHole(node);
   }
 }

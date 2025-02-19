@@ -24,8 +24,6 @@ export type DiffResult = {
 /**
  * Diff two arrays of objects (each having a unique `key`)
  * and return an object with operations grouped by type.
- * reasonably fast: 10k elements 5-6ms 1k 3ms
- * on normal size lists expected in apps negligible overhead of sub millisecond
  */
 export const diff = (
   oldArr: HtmlTemplate[],
@@ -68,7 +66,6 @@ export const diff = (
 
   // Compute the Longest Increasing Subsequence (LIS) indices.
   const lisSeqIndices = computeLIS(seq);
-  // Instead of a Set, use a Boolean array for "keep" marks.
   const keep = new Array(newLen);
   for (i = 0; i < newLen; i++) {
     keep[i] = false;
@@ -78,12 +75,11 @@ export const diff = (
     keep[posMap[lisSeqIndices[i]]] = true;
   }
 
-  // Group operations into separate arrays.
   const opsDelete = [],
     opsInsert = [],
     opsMove = [];
 
-  // Deletions: any key in oldArr that isn't in newArr.
+  // Deletions
   for (i = 0; i < oldLen; i++) {
     k = oldArr[i].key;
     if (newKeys[k] !== true) {
@@ -91,7 +87,7 @@ export const diff = (
     }
   }
 
-  // Insertions and Moves.
+  // Insertions and Moves
   for (i = 0; i < newLen; i++) {
     k = newArr[i].key;
     // Compute beforeKey once per iteration.

@@ -13,8 +13,12 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
     - [] Native Attributes - bind as string
     - [] Make sure attributes are getting parsed correctly when using `'`, `"` or none for example: `@click=${clickHandler}`
 
-- [] Refactoring
-    - [] Refactor list renderer and diffing - class ?? :thinking:
+- [x] Refactoring
+    - [x] Refactor list renderer and diffing - class ?? :thinking:
+
+- [] Built In Directives
+    - [x] Add repeat directive for list rendering similar `lit.dev` (include auto keying under the hood and enforce usage!)
+    - [] Conditional rendering directive signature `condition(boolean | () => boolean, true => HtmlTemplate, false => HtmlTemplate)` :thinking: 
 
 - [] Rendering
     - [x] Render html
@@ -25,7 +29,6 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
             - [x] Allow fallback to array index as key - sorted with auto keying :tada:
             - [x] Look in to `LIS` algorithm
             - [x] Cache list in the Map with a key for instant O(1) access when updating the DOM
-        - [x] Add repeat directive just as `lit-html` does
         - [x] Nested Lists
         - [x] DOM manipulation based on diff result :fire:
             - [x] Render all elements (without diffing)
@@ -35,17 +38,20 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
                 - [x] Deletions
                 - [x] Swaps
                 - [x] Inserts
-        - [] Any possible performance gains ?? This is already faster than it needs be :thinking:
+        - [x] Any possible performance gains ?? This is already faster than it needs be :thinking:
 
     - [] Allow rendering self closing tags `<div />`
+        - [] Need a list of all self closing native html elements :thinking:
     - [] Holes
         - [x] Render Lists => html`${list.map(...)}`
         - [x] Add new hole for list rendering `ListHole`
-        - [] Render instances of `HtmlTemplate` => html`...`
-            - [] Use `TemplateHole` for this
+        - [x] Render instances of `HtmlTemplate` => html`...`
+            - [x] Use `TemplateHole` for this
+            - [x] Add `StringHole` for this
         - [] Allow string rendering => html`Loading...`
-            - [] Add `StringHole` for this
         - [] Conditional rendering (check caches, templates holes etc. to avoid memory leaks :siren:)
+            - [] Add new renderer type/class for TemplateHole => `TemplateRenderer`
+            - [] Conditional template rendering implementation 
 
 - [] Testing (keep to absolute necessity)
     - [] Avoid stupid monkey tests!
