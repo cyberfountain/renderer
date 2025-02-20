@@ -1,5 +1,5 @@
 import { html, render } from "./renderer";
-import { repeat } from "./renderer/src/directives";
+import { condition, repeat } from "./renderer/src/directives";
 
 const random = (): any => (Math.random() + 1).toString(36).substring(7);
 
@@ -65,16 +65,18 @@ const swapRandomElements = (arr: unknown[]) => {
   [arr[index1], arr[index2]] = [arr[index2], arr[index1]];
 };
 
-let condition = true;
+let cond = true;
 
 const template = (): any => {
   return html`
     <div>${someName}</div>
     <div>${html`<span>${someName}</span>`}</div>
-    <div>${html`Loading...`}</div>
-    <span
-      >${condition ? html`<span>true</span>` : html`<span>false</span>`}</span
-    >
+    <div>${`Loading...`}</div>
+    ${condition(
+      cond,
+      html`<span>true</span><span style="margin-left: 20px">${random()}</span>`,
+      html`<span>false</span>`,
+    )}
     <div>
       <ul>
         ${repeat(
@@ -144,6 +146,6 @@ const run = (): void => {
 };
 
 (window as any).toggle = (): void => {
-  condition = !condition;
+  cond = !cond;
   render(template(), container);
 };

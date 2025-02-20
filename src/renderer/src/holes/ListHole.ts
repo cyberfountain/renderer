@@ -1,6 +1,6 @@
 import type { Hole } from "./Hole";
 import type { HtmlTemplate } from "../HtmlTemplate";
-import { ListRenderer } from "../ListRenderer";
+import { ListRenderer } from "../render/ListRenderer";
 import { getCache } from "../element";
 
 export class ListHole implements Hole {

@@ -13,7 +13,7 @@ export type ElementWithCache = {
 } & HTMLElement;
 
 export const getCache = (
-  el: HTMLElement | ParentNode | null,
+  el: HTMLElement | ParentNode | Comment | null,
 ): RenderCache | undefined => {
   if (!el) return undefined;
   const elc = el as ElementWithCache;

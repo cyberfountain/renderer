@@ -71,19 +71,31 @@ export class TemplateFragment {
     return fragment;
   }
 
+  // This is used in top level render it makes sense to append
+  // TODO: Refactoring
   public mount(
     container: HTMLElement | ParentNode,
     values: unknown[],
     beforeNode?: Node,
-  ): void {
+  ): DocumentFragment {
     const fragment = this.initFragment();
     this.hydrateTemplateHoles(fragment, values);
     this.hydrateAttributes(fragment);
     if (beforeNode) {
       container.insertBefore(fragment, beforeNode);
-      return;
+      return fragment;
     }
     container.appendChild(fragment);
+    return fragment;
+  }
+
+  public mountTemplate(node: Comment, values: unknown[]): ChildNode[] {
+    const fragment = this.initFragment();
+    this.hydrateTemplateHoles(fragment, values);
+    this.hydrateAttributes(fragment);
+    const childNodes = Array.from(fragment.childNodes);
+    node.before(fragment);
+    return childNodes;
   }
 
   public mountListElement(

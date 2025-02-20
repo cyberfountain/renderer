@@ -14,3 +14,12 @@ export const repeat = <T extends Record<string | symbol, unknown>>(
     return template;
   });
 };
+
+export const condition = (
+  condition: boolean | (() => boolean),
+  trueTemplate: HtmlTemplate,
+  falseTemplate: HtmlTemplate,
+): HtmlTemplate => {
+  const result = typeof condition === "function" ? condition() : condition;
+  return result ? trueTemplate : falseTemplate;
+};
