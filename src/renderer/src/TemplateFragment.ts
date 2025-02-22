@@ -1,6 +1,7 @@
 import type { HtmlTemplate } from "./HtmlTemplate";
 import { TEMPLATE_MARKER_GLYPH } from "./constants";
 import {
+  fixAttributeQuotes,
   fixSelfClosingTags,
   getIndexFromComment,
   makeMarkerComment,
@@ -35,6 +36,7 @@ export class TemplateFragment {
       }
     }
     this.htmlString = fixSelfClosingTags(this.htmlString);
+    this.htmlString = fixAttributeQuotes(this.htmlString);
   }
 
   private initFragment(): DocumentFragment {

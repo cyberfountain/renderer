@@ -17,8 +17,8 @@ export const fastUID = (): string =>
   Math.floor(performance.now() * 1000).toString(36) +
   Math.random().toString(36).slice(2, 6);
 
-export const fixSelfClosingTags = (input: string): string => {
-  return input.replace(
+export const fixSelfClosingTags = (input: string): string =>
+  input.replace(
     /<([a-zA-Z][^\s/>]*)([^>]*)\/>/g,
     (match: string, tagName: string, rest: string) => {
       if (VOID_ELEMENTS.test(tagName)) {
@@ -27,4 +27,6 @@ export const fixSelfClosingTags = (input: string): string => {
       return `<${tagName}${rest}></${tagName}>`;
     },
   );
-};
+
+export const fixAttributeQuotes = (input: string): string =>
+  input.replace(/(\S+)=((<!--[\s\S]*?-->)|([^\s">]+))/g, '$1="$2"');

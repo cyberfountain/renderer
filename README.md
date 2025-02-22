@@ -4,14 +4,12 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
 
 - [] Attributes
     - [x] Events - @click
-        - [] @click.stop and @click.prevent if possible :thinking:
-        - [] Keep in-line events for now `onclick` etc. when this becomes and issue swap to `addEventListener` - will probably never come to that :thinking:
     - [] Props - :propname - bind directly to an exposed prop handler in my framework
     - [] Add direct props - .propname - ability to set properties directly on `HTML Nodes`
     - [] Add model binding - `~model` - can call it what ever I want with current implementation :tada:
         - [] Model binding based on name of the attribute `~value` etc.
     - [x] Native Attributes - bind as string
-    - [] Make sure attributes are getting parsed correctly when using `'`, `"` or none for example: `@click=${clickHandler}`
+    - [x] Make sure attributes are getting parsed correctly when using `'`, `"` or none for example: `@click=${clickHandler}`
 
 - [x] Refactoring
     - [x] Refactor list renderer and diffing - class ?? :thinking:

@@ -69,15 +69,10 @@ let cond = true;
 
 const template = (): any => {
   return html`
-    <div />
+    <div data-test="123" />
     <app-cutom-element />
     <input name="${random()}" />
-    <div>
-      <ul>
-        ${repeat(list, (val, index) => html`<li>${val.name} ${index}</li>`)}
-      </ul>
-    </div>
-    <button id="btn" @click="${onClick}">Click me</button>
+    <button id="btn" name=${random()} @click=${onClick}>Click me</button>
   `;
 };
 
