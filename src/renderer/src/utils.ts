@@ -1,4 +1,4 @@
-import { TEMPLATE_MARKER_GLYPH } from "./constants";
+import { TEMPLATE_MARKER_GLYPH, VOID_ELEMENTS } from "./constants";
 
 export const getIndexFromComment = (comment: string): number => {
   const regex = new RegExp(`${TEMPLATE_MARKER_GLYPH}(\\d+)`);
@@ -17,9 +17,14 @@ export const fastUID = (): string =>
   Math.floor(performance.now() * 1000).toString(36) +
   Math.random().toString(36).slice(2, 6);
 
-export const perf = (cb: () => void): void => {
-  const from = performance.now();
-  cb();
-  const to = performance.now();
-  console.log(`Total miliseconds ${to - from}`);
+export const fixSelfClosingTags = (input: string): string => {
+  return input.replace(
+    /<([a-zA-Z][^\s/>]*)([^>]*)\/>/g,
+    (match: string, tagName: string, rest: string) => {
+      if (VOID_ELEMENTS.test(tagName)) {
+        return match;
+      }
+      return `<${tagName}${rest}></${tagName}>`;
+    },
+  );
 };

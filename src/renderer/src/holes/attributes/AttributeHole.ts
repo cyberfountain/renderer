@@ -1,4 +1,4 @@
-import type { AttributeDefinition } from "../attributes";
+import type { AttributeDefinition } from "../../attributes";
 
 export abstract class AttributeHole {
   public abstract node: HTMLElement;

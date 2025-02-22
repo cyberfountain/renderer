@@ -5,7 +5,7 @@ const random = (): any => (Math.random() + 1).toString(36).substring(7);
 
 let someName = random();
 
-const listLength = 10;
+const listLength = 10000;
 
 const initList = (count: number): any =>
   Array.from({ length: count }, () => ({
@@ -69,22 +69,12 @@ let cond = true;
 
 const template = (): any => {
   return html`
-    <input name="${list[0].name}" />
+    <div />
+    <app-cutom-element />
+    <input name="${random()}" />
     <div>
       <ul>
-        ${repeat(
-          list,
-          (val, index) =>
-            html`<li>
-              ${val.name} ${index}
-              <ul>
-                ${repeat(
-                  list,
-                  (val, index) => html`<li>${val.name} ${index}</li>`,
-                )}
-              </ul>
-            </li>`,
-        )}
+        ${repeat(list, (val, index) => html`<li>${val.name} ${index}</li>`)}
       </ul>
     </div>
     <button id="btn" @click="${onClick}">Click me</button>

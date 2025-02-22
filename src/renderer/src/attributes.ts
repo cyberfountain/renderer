@@ -1,5 +1,5 @@
 import { Attributes } from "./constants";
-import type { AttributeHole } from "./holes/AttributeHole";
+import type { AttributeHole } from "./holes/attributes/AttributeHole";
 import { EventHole } from "./holes/attributes/EventHole";
 import { StringHole } from "./holes/attributes/StringHole";
 import { makeMarkerComment } from "./utils";

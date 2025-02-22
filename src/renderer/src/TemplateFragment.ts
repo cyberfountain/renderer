@@ -1,18 +1,22 @@
-import type { RenderCache } from "./element";
-import { getCache } from "./element";
-import type { Hole } from "./holes/Hole";
 import type { HtmlTemplate } from "./HtmlTemplate";
 import { TEMPLATE_MARKER_GLYPH } from "./constants";
-import { getIndexFromComment, makeMarkerComment } from "./utils";
+import {
+  fixSelfClosingTags,
+  getIndexFromComment,
+  makeMarkerComment,
+} from "./utils";
 import {
   type AttributeDefinition,
   detectAttributes,
   processAttribute,
 } from "./attributes";
 import { HoleFactory } from "./holes/HoleFactory";
+import type { Hole } from "./holes/Hole";
+import type { RenderCache } from "./render/ListRenderer";
+import type { AttributeHole } from "./holes/attributes/AttributeHole";
 
 export class TemplateFragment {
-  public holes = new Map<number, Hole>();
+  public holes = new Map<number, Hole | AttributeHole>();
   private htmlString = "";
   private attributeMap: AttributeDefinition[] = [];
 
@@ -30,6 +34,7 @@ export class TemplateFragment {
         this.htmlString += makeMarkerComment(i);
       }
     }
+    this.htmlString = fixSelfClosingTags(this.htmlString);
   }
 
   private initFragment(): DocumentFragment {

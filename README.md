@@ -26,7 +26,7 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
     - [x] Add repeat directive for list rendering similar `lit.dev` (include auto keying under the hood and enforce usage!)
     - [x] Conditional rendering directive signature `condition(boolean | () => boolean, true => HtmlTemplate, false => HtmlTemplate)` :thinking: 
 
-- [] Rendering
+- [x] Rendering
     - [x] Render html
     - [x] Render Lists
         - [x] Simple naive rendering
@@ -46,8 +46,8 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
                 - [x] Inserts
         - [x] Any possible performance gains ?? This is already faster than it needs be :thinking:
 
-    - [] Allow rendering self closing tags `<div />`
-        - [] Need a list of all self closing native html elements :thinking:
+    - [x] Allow rendering self closing tags `<div />`
+        - [x] Need a list of all self closing native html elements :thinking: - https://developer.mozilla.org/en-US/docs/Glossary/Void_element
     - [x] Holes
         - [x] Render Lists => html`${list.map(...)}`
         - [x] Add new hole for list rendering `ListHole`
@@ -59,8 +59,5 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
             - [x] Add new renderer type/class for TemplateHole => `TemplateRenderer`
             - [x] Conditional template rendering implementation 
 
-- [] Testing (keep to absolute necessity)
-    - [] Avoid stupid monkey tests!
-    - [] Simple tests for list rendering
 
 - [] Transform it in to a library
