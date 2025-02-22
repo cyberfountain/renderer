@@ -67,12 +67,20 @@ const swapRandomElements = (arr: unknown[]) => {
 
 let cond = true;
 
+const ref = { value: "Hello There!" };
+
 const template = (): any => {
   return html`
     <div data-test="123" />
     <app-cutom-element />
-    <input name="${random()}" />
-    <button id="btn" name=${random()} @click=${onClick}>Click me</button>
+    ${ref.value}
+    <input name="${random()}" ~model=${ref} />
+    <hr />
+    ${repeat(list, (val, index) => html`<div>${val.name} ${index}</div>`)}
+    <hr />
+    <button id="btn" :test=${random()} name=${random()} @click=${onClick}>
+      Click me
+    </button>
   `;
 };
 

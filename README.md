@@ -2,12 +2,11 @@
 
 A fast, compact HTML renderer that avoids a virtual DOM by leveraging string template literals. Inspired by `lit-html` and `uhtml`, it's designed as a drop-in replacement for a forked version of `uhtml` in another project.
 
-- [] Attributes
+- [x] Attributes
     - [x] Events - @click
-    - [] Props - :propname - bind directly to an exposed prop handler in my framework
-    - [] Add direct props - .propname - ability to set properties directly on `HTML Nodes`
-    - [] Add model binding - `~model` - can call it what ever I want with current implementation :tada:
-        - [] Model binding based on name of the attribute `~value` etc.
+    - [x] Props - :propname - bind directly to an exposed prop handler in my framework
+    - [x] Add direct props - .propname - ability to set properties directly on `HTML Nodes`
+    - [x] Add model binding - `~model` - can call it what ever I want with current implementation :tada:
     - [x] Native Attributes - bind as string
     - [x] Make sure attributes are getting parsed correctly when using `'`, `"` or none for example: `@click=${clickHandler}`
 
