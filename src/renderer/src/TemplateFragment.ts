@@ -1,3 +1,4 @@
+import type { RenderCache } from "./element";
 import { getCache } from "./element";
 import type { Hole } from "./holes/Hole";
 import type { HtmlTemplate } from "./HtmlTemplate";
@@ -71,22 +72,11 @@ export class TemplateFragment {
     return fragment;
   }
 
-  // This is used in top level render it makes sense to append
-  // TODO: Refactoring
-  public mount(
-    container: HTMLElement | ParentNode,
-    values: unknown[],
-    beforeNode?: Node,
-  ): DocumentFragment {
+  public mount(container: HTMLElement | ParentNode, values: unknown[]): void {
     const fragment = this.initFragment();
     this.hydrateTemplateHoles(fragment, values);
     this.hydrateAttributes(fragment);
-    if (beforeNode) {
-      container.insertBefore(fragment, beforeNode);
-      return fragment;
-    }
     container.appendChild(fragment);
-    return fragment;
   }
 
   public mountTemplate(node: Comment, values: unknown[]): ChildNode[] {
@@ -99,16 +89,23 @@ export class TemplateFragment {
   }
 
   public mountListElement(
-    container: HTMLElement | ParentNode,
+    commentNode: Comment,
     itemKey: string,
     values: unknown[],
-    beforeNode?: Node,
+    cache: RenderCache,
+    beforeNode?: ChildNode,
   ): void {
-    this.mount(container, values, beforeNode);
-    const cache = getCache(container);
+    const fragment = this.initFragment();
+    this.hydrateTemplateHoles(fragment, values);
+    this.hydrateAttributes(fragment);
+    if (beforeNode) {
+      beforeNode.before(fragment);
+    }
+    commentNode.before(fragment);
+
     const insertedNode = beforeNode
       ? beforeNode.previousSibling
-      : container.lastChild;
+      : commentNode.previousSibling;
     if (insertedNode && cache) {
       cache.listNodes.set(itemKey, insertedNode);
     }

@@ -1,6 +1,6 @@
 import { HtmlTemplate } from "./HtmlTemplate";
 import { TemplateFragment } from "./TemplateFragment";
-import { getCache } from "./element";
+import { getRootCache } from "./cache/cache";
 
 export const html = (
   strings: TemplateStringsArray,
@@ -17,8 +17,7 @@ export const render = (
     throw new Error("render method needs to accept instance of HTMLElement");
   }
 
-  const cache = getCache(container);
-  if (!cache) return;
+  const cache = getRootCache(container);
   let templateFragment = cache.template.get(template.strings);
 
   if (!templateFragment) {

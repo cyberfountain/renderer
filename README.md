@@ -15,13 +15,14 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
 
 - [x] Refactoring
     - [x] Refactor list renderer and diffing - class ?? :thinking:
-    - [] List rendering depends on parent element to be set :thinking: It needs changing to be in-line with `TemplateRenderer`
-    - [] Keeping cache on parent node is redundant, other options are better such as using comment node or `Renderer` instance.
-    - [] Drawback of not having parent node for list, clearing lists will have to happen one by one :thinking:
-        - [] Most likely not a big issue :thinking:
-    - [] Top level render method to keep cache on parent element
+    - [x] List rendering depends on parent element to be set :thinking: It needs changing to be in-line with `TemplateRenderer`
+    - [x] Keeping cache on parent node is redundant, other options are better such as using comment node or `Renderer` instance.
+    - [x] Drawback of not having parent node for list, clearing lists will have to happen one by one :thinking:
+        - [x] Most likely not a big issue :thinking:
+    - [x] Top level render method to keep cache on parent element
+    - [x] Allow rendering multiple list in the same parent
 
-- [] Built In Directives
+- [x] Built In Directives
     - [x] Add repeat directive for list rendering similar `lit.dev` (include auto keying under the hood and enforce usage!)
     - [x] Conditional rendering directive signature `condition(boolean | () => boolean, true => HtmlTemplate, false => HtmlTemplate)` :thinking: 
 

@@ -5,7 +5,7 @@ export class StringHole implements Hole {
   public node = document.createTextNode("");
 
   constructor(public commentNode: Comment) {
-    commentNode.parentNode?.insertBefore(this.node, commentNode);
+    commentNode.before(this.node);
   }
 
   public setValue(value: HtmlTemplate[]): void {

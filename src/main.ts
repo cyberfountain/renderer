@@ -77,6 +77,8 @@ const template = (): any => {
       html`<span>true</span><span style="margin-left: 20px">${random()}</span>`,
       html`<span>false</span>`,
     )}
+    <hr />
+    ${repeat(names, (name) => html`<div>${name.name}</div>`)}
     <div>
       <ul>
         ${repeat(

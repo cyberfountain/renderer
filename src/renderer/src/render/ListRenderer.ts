@@ -4,21 +4,29 @@ import type {
   DiffMoveOperations,
 } from "../diff";
 import { diff } from "../diff";
-import { type RenderCache } from "../element";
 import type { HtmlTemplate } from "../HtmlTemplate";
 import { TemplateFragment } from "../TemplateFragment";
 
+export type RenderCache = {
+  listTemplate: Map<string, TemplateFragment>;
+  listNodes: Map<string, ChildNode>;
+  listHtmlTemplate: HtmlTemplate[];
+};
+
 export class ListRenderer {
-  constructor(
-    private container: ParentNode,
-    private cache: RenderCache,
-  ) {}
+  private cache: RenderCache = {
+    listTemplate: new Map<string, TemplateFragment>(),
+    listNodes: new Map<string, ChildNode>(),
+    listHtmlTemplate: [],
+  };
+
+  constructor(private commentNode: Comment) {}
 
   private renderListElement(
     template: HtmlTemplate,
-    beforeNode?: Node,
+    beforeNode?: ChildNode,
   ): TemplateFragment {
-    if (!this.container) {
+    if (!this.commentNode) {
       throw new Error(
         "renderList method needs to accept instance of HTMLElement",
       );
@@ -34,9 +42,10 @@ export class ListRenderer {
       templateFragment = new TemplateFragment(template);
       this.cache.listTemplate.set(template.key, templateFragment);
       templateFragment.mountListElement(
-        this.container,
+        this.commentNode,
         template.key,
         template.values,
+        this.cache,
         beforeNode,
       );
     }
@@ -52,24 +61,12 @@ export class ListRenderer {
     }
   }
 
-  private getFirstComment(): Comment {
-    // Browser weirdness white space is treated as Text node when parsed from innerHtml
-    // got to check first and second node :shrug:
-    if (this.container.childNodes[0] instanceof Comment) {
-      return this.container.childNodes[0] as Comment;
-    }
-    return this.container.childNodes[1] as Comment;
-  }
-
   private emptyList(): void {
-    const frag = document.createDocumentFragment();
-    const comment = this.getFirstComment();
-    frag.appendChild(comment);
-    (this.container as HTMLElement).innerHTML = "";
-    this.container.appendChild(frag.firstChild as Comment);
+    for (const [, node] of this.cache.listNodes) {
+      node.remove();
+    }
     this.cache.listTemplate.clear();
     this.cache.listNodes.clear();
-    this.cache.template.clear();
   }
 
   private deleteNodes(deletes: DiffDeleteOperations): void {
@@ -88,8 +85,8 @@ export class ListRenderer {
       const node = this.cache.listNodes.get(moves[i].key);
       const beforeNode = this.cache.listNodes.get(moves[i].beforeKey!);
 
-      if (node && beforeNode) this.container.insertBefore(node, beforeNode);
-      if (!beforeNode && node) this.container.appendChild(node);
+      if (node && beforeNode) beforeNode?.before(node);
+      if (!beforeNode && node) this.commentNode.before(node);
     }
   }
 
