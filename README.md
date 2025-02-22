@@ -10,7 +10,7 @@ A fast, compact HTML renderer that avoids a virtual DOM by leveraging string tem
     - [] Add direct props - .propname - ability to set properties directly on `HTML Nodes`
     - [] Add model binding - `~model` - can call it what ever I want with current implementation :tada:
         - [] Model binding based on name of the attribute `~value` etc.
-    - [] Native Attributes - bind as string
+    - [x] Native Attributes - bind as string
     - [] Make sure attributes are getting parsed correctly when using `'`, `"` or none for example: `@click=${clickHandler}`
 
 - [x] Refactoring

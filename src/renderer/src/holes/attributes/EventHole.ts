@@ -1,4 +1,4 @@
-import type { AttributeDefinition } from "../attributes";
+import type { AttributeDefinition } from "../../attributes";
 import type { AttributeHole } from "./AttributeHole";
 
 export class EventHole implements AttributeHole {

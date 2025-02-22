@@ -1,6 +1,7 @@
 import { Attributes } from "./constants";
-import { EventHole } from "./holes/EventHole";
-import type { Hole } from "./holes/Hole";
+import type { AttributeHole } from "./holes/AttributeHole";
+import { EventHole } from "./holes/attributes/EventHole";
+import { StringHole } from "./holes/attributes/StringHole";
 import { makeMarkerComment } from "./utils";
 
 export type AttributeDefinition = {
@@ -47,7 +48,7 @@ export const detectAttributes = (
 export const processAttribute = (
   fragment: DocumentFragment,
   definition: AttributeDefinition,
-): Hole | undefined => {
+): AttributeHole | undefined => {
   const node = fragment.querySelector<HTMLElement>(
     selectorPattern(definition.name, definition.value, definition.direct),
   );
@@ -61,7 +62,7 @@ export const processAttribute = (
       case Attributes.EVENT:
         return new EventHole(node, definition);
       default:
-        return undefined;
+        return new StringHole(node, definition);
     }
   }
 

@@ -69,16 +69,7 @@ let cond = true;
 
 const template = (): any => {
   return html`
-    <div>${someName}</div>
-    <div>${html`<span>${someName}</span>`}</div>
-    <div>${`Loading...`}</div>
-    ${condition(
-      cond,
-      html`<span>true</span><span style="margin-left: 20px">${random()}</span>`,
-      html`<span>false</span>`,
-    )}
-    <hr />
-    ${repeat(names, (name) => html`<div>${name.name}</div>`)}
+    <input name="${list[0].name}" />
     <div>
       <ul>
         ${repeat(
